@@ -1,0 +1,20 @@
+schema: spec-driven
+
+# 项目上下文（可选）
+# 这些内容会在创建 artifacts 时提供给 AI。
+# 在这里补充你的技术栈、约定、风格指南、领域知识等。
+# 示例：
+#   context: |
+#     技术栈：TypeScript、React、Node.js
+#     我们使用 conventional commits
+#     领域：电商平台
+
+# 按 artifact 设置的规则（可选）
+# 在这里为特定 artifact 添加自定义规则。
+# 示例：
+#   rules:
+#     proposal:
+#       - proposal 控制在 500 字以内
+#       - 始终包含“非目标”部分
+#     tasks:
+#       - 将任务拆分成每个不超过 2 小时的块

@@ -1,0 +1,10 @@
+.env
+accounts.json
+logs/
+state/
+__pycache__/
+*.pyc
+claude.exe
+.claude/settings.local.json
+.codex/NEXT_SESSION.md
+.pytest_cache/

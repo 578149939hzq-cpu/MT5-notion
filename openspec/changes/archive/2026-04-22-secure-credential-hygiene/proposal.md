@@ -1,0 +1,40 @@
+## 背景与原因
+当前项目的主同步链路已经可用，但仓库与运行环境仍暴露出明显的安全卫生问题。最突出的风险不是同步逻辑本身，而是敏感信息出现在了不该出现的位置：`accounts.example.json` 当前包含真实 MT5 账户、服务器与密码；部分 `archive/` 脚本仍保留硬编码的 Notion 数据库标识；运行日志会落盘 MT5 账号、服务器、余额与终端数据路径；诊断工具会打印 Notion token 前缀与完整 `DATABASE_ID`。
+
+这些问题会让“本地可运行”与“可安全协作”发生冲突。即使 `.env` 与 `accounts.json` 已被 `.gitignore` 忽略，只要示例文件、归档脚本或日志仍然泄露敏感信息，项目就仍然存在误提交、误分享、误备份和误传播的风险。继续在这个状态上迭代，会把安全债务带进后续所有自动化与运维流程。
+
+本次 change 的目标不是引入复杂的密钥管理系统，而是先完成一轮基础的安全收口，把当前仓库从“容易误泄露”收敛到“默认最小暴露”。
+
+## 变更内容
+
+- 清理仓库中的明文敏感信息，确保示例配置文件只保留占位符或假数据，而不包含真实 MT5 账户与密码。
+- 收敛 `archive/` 目录中的硬编码敏感标识，避免历史脚本继续携带或传播生产环境标识符。
+- 调整主同步脚本与诊断工具的日志/终端输出，默认不再打印完整 MT5 登录号、账户余额、终端数据路径、Notion token 前缀或完整数据库 ID。
+- 明确区分“运行所需的本地私有配置”和“允许进入仓库的示例配置”，并在文档中重新说明推荐的存放方式。
+- 补充回归验证，确保新的日志脱敏与示例文件约束不会回退。
+
+## 非目标
+
+- 本次不改变 MT5 -> Notion 的业务同步逻辑，不调整增量同步、去重、MAE/MFE 计算或账户轮询行为。
+- 本次不引入 Windows Credential Manager、DPAPI、外部 Secret Manager 等更重的凭据托管机制。
+- 本次不试图清理已经离开当前工作区的外部传播面；如果真实凭据曾被提交、共享或备份，密码轮换属于运维动作，不在代码改动范围内。
+
+## 能力范围
+
+### 新增能力
+- `credential-hygiene`: 为本地同步项目提供示例文件净化、敏感日志脱敏与诊断输出最小化的基础安全卫生能力。
+
+### 修改能力
+- `multi-account-trade-sync`: 在不改变同步行为的前提下，收紧配置文件与运行日志中的敏感信息暴露面。
+
+## 影响评估
+
+受影响的内容主要包括：
+
+- 主同步脚本 [`mt5_notion_sync.py`](D:\Trading_data_notion\mt5_notion_sync.py) 的日志输出与启动说明
+- 诊断工具 [`tools/diagnostic_support.py`](D:\Trading_data_notion/tools/diagnostic_support.py) 与 [`tools/test_connection.py`](D:\Trading_data_notion/tools/test_connection.py) 的环境变量提示与敏感信息输出
+- 示例配置 [`accounts.example.json`](D:\Trading_data_notion/accounts.example.json) 与项目文档 [`README.md`](D:\Trading_data_notion/README.md)
+- 历史脚本目录 [`archive`](D:\Trading_data_notion/archive) 中仍包含敏感标识或误导性配置的文件
+- 相关回归测试文件 [`tests/test_mt5_notion_sync.py`](D:\Trading_data_notion/tests/test_mt5_notion_sync.py)
+
+这次变更完成后，项目的默认操作习惯会更安全，但也会失去一部分“调试时顺手可见”的信息。例如日志里不再直接显示完整账号或余额，诊断脚本也不再回显完整标识符。这个取舍是有意为之：调试便利性让位于默认安全。

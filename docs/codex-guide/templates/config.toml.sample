@@ -1,0 +1,29 @@
+model = "gpt-5.5"
+model_reasoning_effort = "high"
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+web_search = "cached"
+
+[windows]
+sandbox = "elevated"
+
+[features]
+multi_agent = true
+personality = true
+shell_snapshot = true
+
+# Optional project-specific writable roots:
+# [sandbox_workspace_write]
+# writable_roots = ["D:/another/path"]
+
+# Optional profiles:
+# [profiles.readonly_quiet]
+# approval_policy = "never"
+# sandbox_mode = "read-only"
+
+# Optional deny-read example:
+# default_permissions = "workspace"
+#
+# [permissions.workspace.filesystem]
+# ":project_roots" = { "." = "write", "**/*.env" = "none" }
+# glob_scan_max_depth = 3

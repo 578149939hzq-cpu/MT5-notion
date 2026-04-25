@@ -1,0 +1,6 @@
+MetaTrader5
+notion-client
+python-dotenv
+pytz
+requests
+psutil

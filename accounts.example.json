@@ -1,0 +1,14 @@
+[
+  {
+    "account_name": "Example-Account-A",
+    "login": 123456,
+    "password": "replace-with-your-mt5-password-a",
+    "server": "Your-Server-A"
+  },
+  {
+    "account_name": "Example-Account-B",
+    "login": 789012,
+    "password": "replace-with-your-mt5-password-b",
+    "server": "Your-Server-B"
+  }
+]
