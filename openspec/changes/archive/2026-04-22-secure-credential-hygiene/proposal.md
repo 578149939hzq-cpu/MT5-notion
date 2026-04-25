@@ -31,10 +31,10 @@
 
 受影响的内容主要包括：
 
-- 主同步脚本 [`mt5_notion_sync.py`](D:\Trading_data_notion\mt5_notion_sync.py) 的日志输出与启动说明
-- 诊断工具 [`tools/diagnostic_support.py`](D:\Trading_data_notion/tools/diagnostic_support.py) 与 [`tools/test_connection.py`](D:\Trading_data_notion/tools/test_connection.py) 的环境变量提示与敏感信息输出
-- 示例配置 [`accounts.example.json`](D:\Trading_data_notion/accounts.example.json) 与项目文档 [`README.md`](D:\Trading_data_notion/README.md)
-- 历史脚本目录 [`archive`](D:\Trading_data_notion/archive) 中仍包含敏感标识或误导性配置的文件
-- 相关回归测试文件 [`tests/test_mt5_notion_sync.py`](D:\Trading_data_notion/tests/test_mt5_notion_sync.py)
+- 主同步脚本 `mt5_notion_sync.py` 的日志输出与启动说明
+- 诊断工具 `tools/diagnostic_support.py` 与 `tools/test_connection.py` 的环境变量提示与敏感信息输出
+- 示例配置 `accounts.example.json` 与项目文档 `README.md`
+- 历史脚本目录 `archive/` 中仍包含敏感标识或误导性配置的文件
+- 相关回归测试文件 `tests/test_mt5_notion_sync.py`
 
 这次变更完成后，项目的默认操作习惯会更安全，但也会失去一部分“调试时顺手可见”的信息。例如日志里不再直接显示完整账号或余额，诊断脚本也不再回显完整标识符。这个取舍是有意为之：调试便利性让位于默认安全。
